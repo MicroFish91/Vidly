@@ -29,6 +29,20 @@ router.get('/:id', async (req, res) => {
 });
 
 // Post a Genre
+router.post('/', async (req, res) => {
+
+    // Validate
+    const { error } = validateInput(req.body);  // error = req.body.error
+    // If invalid, return 400 error message
+    if (error) res.status(400).send(error.message);
+
+    const video = new Video({
+        name: req.body.name
+    });
+
+    const result = await video.save();
+    res.send(result);
+});
 
 // Update a Specific Genre
 router.put('/:id', async (req, res) => {
