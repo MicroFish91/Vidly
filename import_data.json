@@ -1,0 +1,4 @@
+[
+  {"_id":{"$oid":"5a68fdc3615eda645bc6bdec"},"name": "Romance"},
+  {"_id":{"$oid":"5a68fdc3615eda645bc6bdeb"},"name": "Comedy"}
+]

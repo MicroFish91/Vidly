@@ -1,0 +1,1 @@
+mongoimport --db vidly --collection videos --drop --file import_data.json --jsonArray
