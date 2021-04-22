@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const Video = mongoose.model('Video', new mongoose.Schema({
+const Genre = mongoose.model('Genre', new mongoose.Schema({
     name: { type: String, 
         required: true,
         minlength: 4,
@@ -17,5 +17,5 @@ function validateGenres(userInput){
     return schema.validate(userInput);
 }
 
-exports.Video = Video;
+exports.Genre = Genre;
 exports.validate = validateGenres;
