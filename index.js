@@ -8,6 +8,7 @@ const app = express();
 const logger = require('./middleware/logger');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
+const movies = require('./routes/movies');
 const home = require('./routes/home');
 const port = process.env.PORT || 3000;
 
@@ -40,6 +41,7 @@ mongoose.connect('mongodb://localhost:27017/vidly', {useNewUrlParser: true}, { u
 // Routes
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
+app.use('/api/movies', movies);
 app.use('/', home);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
