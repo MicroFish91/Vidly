@@ -1,15 +1,17 @@
 const helmet = require('helmet');
 const debug = require('debug')('app:startup');  // set env 'export DEBUG='app:startup'
 const mongoose = require('mongoose');
+const Fawn = require('fawn');
 const morgan = require('morgan'); // For developer mode, simplifies task of logging HTTP requests to and from app
 const config = require('config');  // RC is also commonly used
 const express = require('express');
-const app = express();
 const logger = require('./middleware/logger');
 const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
+const rentals = require('./routes/rentals');
 const home = require('./routes/home');
+const app = express();
 const port = process.env.PORT || 3000;
 
 // Configuration
@@ -38,10 +40,14 @@ mongoose.connect('mongodb://localhost:27017/vidly', {useNewUrlParser: true}, { u
     .then(() => console.log('Connected  to MongoDB...'))
     .catch((err) => console.error('Could not connect to MongoDB...', err));
 
+
+Fawn.init(mongoose);
+
 // Routes
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
 app.use('/api/movies', movies);
+app.use('/api/rentals', rentals);
 app.use('/', home);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
