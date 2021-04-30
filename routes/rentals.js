@@ -5,6 +5,12 @@ const { Movie } = require('../models/movies');
 const { Customer } = require('../models/customer');
 const { validate, Rental } = require('../models/rental');
 
+// Get List of Rentals
+router.get('/', async(req, res) => {
+    const rentals = Rental.find().sort('-dateOut');
+    res.send(rentals);
+});
+
 // Post a Rental
 router.post('/', async(req, res) => {
 
