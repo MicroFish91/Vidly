@@ -7,15 +7,18 @@ const { User } = require('../models/user');
 
 router.post('/', async(req, res) => {
     const { error } = validateAuth(req.body);
-    if (error) {res.status(400).send(error.message); return;};
+    if (error) return res.status(400).send(error.message);
 
     let user = await User.findOne({ email: req.body.email });
-    if (!user) {res.status(400).send('Invalid email or password.'); return;};
+    if (!user) return res.status(400).send('Invalid email or password.');
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) {res.status(400).send('Invalid email or password.'); return;};
+    if (!validPassword) return res.status(400).send('Invalid email or password.');
 
-    res.send(true);
+    // jwt format: { header: {} , payload: {}, dig. signature: {} }
+    // pass payload format into jwt.sign(payload, secret)
+    const token = user.generateAuthToken();
+    res.send(token);
 });
 
 function validateAuth(userInput){

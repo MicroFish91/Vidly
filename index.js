@@ -19,9 +19,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Configuration
-// console.log('Application Name: ' + config.get('name'));
-// console.log('Mail Server: ' + config.get('mail.host'));
-// console.log('Mail Password: ' + config.get('mail.password'));
+// Terminal - Mac: 'export vidly_jwtPrivateKey=mySecureKey'
+// CMD - Windows: 'set vidly_jwtPrivateKey=mySecureKey'
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+    process.exit(1);
+}
 
 // process.env.NODE_ENV (undefined if not set), app.get defaults to development if NODE_ENV undefined
 // example of setting in console: export NODE_ENV=production
