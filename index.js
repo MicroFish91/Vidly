@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const Fawn = require('fawn');
 const morgan = require('morgan'); // For developer mode, simplifies task of logging HTTP requests to and from app
 const config = require('config');  // RC is also commonly used
+const winston = require('winston');
+require('winston-mongodb');
 const express = require('express');
 const logger = require('./middleware/logger');
 const genres = require('./routes/genres');
@@ -17,9 +19,30 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const home = require('./routes/home');
 const error = require('./middleware/error');
-const { rest } = require('lodash');
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Error Handlers
+// process.on('uncaughtException', (ex) => {
+//     winston.error(ex.message, ex);
+//     process.exit(1);
+// });
+
+process.on('unhandledRejection', (ex) => {
+    throw(ex);
+});
+
+winston.exceptions.handle(
+    new winston.transports.File({ filename: 'uncaughtExceptions.log' })
+);
+
+// Winston error transports (log to file and mongodb)
+winston.add(new winston.transports.File({ filename: 'logfile.log' }));
+winston.add(new winston.transports.MongoDB({ 
+    db: 'mongodb://localhost:27017/vidly',
+    level: 'info'
+}));
+
 
 // Configuration
 // Terminal - Mac: 'export vidly_jwtPrivateKey=mySecureKey'
