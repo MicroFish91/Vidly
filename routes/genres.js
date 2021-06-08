@@ -4,19 +4,15 @@ const { Genre, validate } = require('../models/genre');
 const router = express.Router();
 
 // Display All Genres
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, async (req, res, next) => {
   const genres = await Genre.find().sort('name');
   res.send(genres);
 });
 
 // Display a Specific ID
 router.get('/:id', auth, async (req, res) => {
-  try {
-    const genre = await Genre.findById(req.params.id);
-    res.send(genre);
-  } catch (e) {
-    res.status(404).send('The genre with the given ID was not found.');
-  }
+  const genre = await Genre.findById(req.params.id);
+  res.send(genre);
 });
 
 // Post a Genre

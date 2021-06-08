@@ -1,3 +1,4 @@
+require('express-async-errors');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
 const helmet = require('helmet');
@@ -15,6 +16,8 @@ const rentals = require('./routes/rentals');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const home = require('./routes/home');
+const error = require('./middleware/error');
+const { rest } = require('lodash');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -57,5 +60,8 @@ app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
 app.use('/', home);
+
+// Error Handler
+app.use(error);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
